@@ -65,8 +65,8 @@ const EventSchema = new Schema<IEvent>(
   }
 );
 
-// Unique index for quick lookups by slug.
-EventSchema.index({ slug: 1 }, { unique: true });
+// Note: `slug` declares `unique: true` in the schema, so an explicit
+// index here is redundant and has been removed.
 
 // Normalize time strings to a consistent HH:mm 24h format.
 function normalizeTime(value: string): string {
@@ -96,7 +96,33 @@ function normalizeTime(value: string): string {
   return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 }
 
-// Pre-save hook: validate required fields, generate slug, and normalize date/time.
+// Pre-validate hook: ensure `slug` is generated before Mongoose built-in
+// validators run (schema-level `required: true` for `slug`). This prevents
+// validation failures when `slug` is not provided by the caller.
+EventSchema.pre<IEvent>('validate', function preValidate(next) {
+  try {
+    if (
+      (this.isModified('title') || !this.slug) &&
+      typeof this.title === 'string' &&
+      this.title.trim().length > 0
+    ) {
+      const baseSlug = this.title
+        .toLowerCase()
+        .trim()
+        .replace(/[\s\-_]+/g, '-')
+        .replace(/[^a-z0-9-]/g, '')
+        .replace(/^-+|-+$/g, '');
+
+      this.slug = baseSlug;
+    }
+
+    next();
+  } catch (error) {
+    next(error as Error);
+  }
+});
+
+// Pre-save hook: validate required fields and normalize date/time.
 EventSchema.pre<IEvent>('save', function preSave(next) {
   try {
     // Ensure required string fields are present and non-empty.
@@ -119,18 +145,6 @@ EventSchema.pre<IEvent>('save', function preSave(next) {
       if (typeof value !== 'string' || value.trim().length === 0) {
         throw new Error(`Field "${String(field)}" is required and cannot be empty`);
       }
-    }
-
-    // Generate a URL-friendly slug only when title changes.
-    if (this.isModified('title') || !this.slug) {
-      const baseSlug = this.title
-        .toLowerCase()
-        .trim()
-        .replace(/[\s\-_]+/g, '-')
-        .replace(/[^a-z0-9-]/g, '')
-        .replace(/^-+|-+$/g, '');
-
-      this.slug = baseSlug;
     }
 
     // Normalize date to an ISO date string (YYYY-MM-DD).
