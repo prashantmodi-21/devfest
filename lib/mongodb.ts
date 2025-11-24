@@ -43,7 +43,7 @@ export async function connectToDatabase(): Promise<Mongoose> {
     const options: ConnectOptions = {
       // Let Mongoose manage its internal connection pool.
       bufferCommands: false,
-      dbName: process.env.MONGODB_DB_NAME,
+      dbName: "devfest",
     };
 
     cached.promise = mongoose.connect(MONGODB_URI, options);
