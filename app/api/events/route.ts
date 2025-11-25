@@ -5,7 +5,7 @@ import { v2 as cloudinary } from 'cloudinary';
 
 export async function GET() {
   try {
-    connectToDatabase()
+    await connectToDatabase()
     const events = await Event.find().sort({ createdAt: -1 })
     return NextResponse.json({message: "Events Fetched Successfully", events}, { status: 200 })
   } catch (error) {
@@ -15,7 +15,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    connectToDatabase()
+    await connectToDatabase()
     let event;
     const formData = await request.formData();
     try {

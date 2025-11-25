@@ -1,5 +1,4 @@
 "use cache"
-import { events } from '@/lib/contants'
 import EventCard from './components/EventCard'
 import ExploreBtn from './components/ExploreBtn'
 import { IEvent } from '@/database'
@@ -21,7 +20,7 @@ const page = async() => {
       <section className='mt-20 my-7' id='events'>
         <h3 className='mb-5'>Feature Events</h3>
         <div className='events'>
-          {events && events.length > 0 && events.map((event: IEvent) => (
+          {events?.length > 0 && events.map((event: IEvent) => (
             <div key={event.slug}>
               <EventCard {...event} />
             </div>
