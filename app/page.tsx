@@ -1,14 +1,12 @@
+<<<<<<< HEAD
 "use cache"
+=======
+import { events } from '@/lib/contants'
+>>>>>>> main
 import EventCard from './components/EventCard'
 import ExploreBtn from './components/ExploreBtn'
-import { IEvent } from '@/database'
-import { cacheLife } from 'next/cache'
 
-const page = async() => {
-  cacheLife('hours')
-  
-  const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events`)
-  const {events} = await response.json()
+const page = () => {
   return (
     <>
       <section className='text-center'>
@@ -20,7 +18,11 @@ const page = async() => {
       <section className='mt-20 my-7' id='events'>
         <h3 className='mb-5'>Feature Events</h3>
         <div className='events'>
+<<<<<<< HEAD
           {events?.length > 0 && events.map((event: IEvent) => (
+=======
+          {events.map((event) => (
+>>>>>>> main
             <div key={event.slug}>
               <EventCard {...event} />
             </div>
