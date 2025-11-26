@@ -1,5 +1,4 @@
 "use cache"
-import { events } from '@/lib/contants'
 import EventCard from './components/EventCard'
 import ExploreBtn from './components/ExploreBtn'
 import { IEvent } from '@/database'
