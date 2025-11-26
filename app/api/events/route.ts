@@ -16,7 +16,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    connectToDatabase()
+    await connectToDatabase()
     let event;
     const formData = await request.formData();
     try {
