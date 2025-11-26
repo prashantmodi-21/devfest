@@ -5,7 +5,7 @@ import { v2 as cloudinary } from 'cloudinary';
 
 export async function GET() {
   try {
-    connectToDatabase()
+    await connectToDatabase()
     const events = await Event.find().sort({ createdAt: -1 })
     return NextResponse.json({message: "Events Fetched Successfully", events}, { status: 200 })
   } catch (error) {
