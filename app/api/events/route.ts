@@ -44,8 +44,13 @@ export async function POST(request: NextRequest) {
         });
 
         event.image = (uploadResult as { secure_url: string }).secure_url;
-        let agenda = JSON.parse(event.agenda as string)
-        let tags = JSON.parse(event.tags as string)
+        let agenda, tags
+        try {
+          agenda = JSON.parse(event.agenda as string)
+          tags = JSON.parse(event.tags as string)
+        } catch {
+          return NextResponse.json({message: 'Invalid JSON in agenda or tags'}, { status: 400 })
+        }
         
     const createdEvent = await Event.create({ ...event, agenda, tags })
     return NextResponse.json({message: 'Event created', event: createdEvent}, { status: 201 })
