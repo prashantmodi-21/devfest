@@ -26,6 +26,11 @@ export async function POST(request: NextRequest) {
     }
     const file = formData.get('image') as File
     if(!file) return NextResponse.json({message: 'Image file is required'}, { status: 400 })
+    
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
+    if (!allowedTypes.includes(file.type)) {
+      return NextResponse.json({message: 'Invalid image type. Allowed: jpeg, png, gif, webp'}, { status: 400 })
+    }
 
     const imageData = await file.arrayBuffer()
     const buffer = Buffer.from(imageData)
