@@ -91,7 +91,7 @@ const EventPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
             <EventDetails image="/icons/clock.svg" alt="Clock Icon" info={time} />
             <EventDetails image="/icons/pin.svg" alt="Location Icon" info={`${venue}, ${location}`} />
             <EventDetails image="/icons/mode.svg" alt="Mode Icon" info={mode} />
-            <EventDetails image="/icons/audience.svg" alt="Location Icon" info={audience} />
+            <EventDetails image="/icons/audience.svg" alt="Audience Icon" info={audience} />
           </section>
 
           <EventAgenda agendaItems={agenda} />
