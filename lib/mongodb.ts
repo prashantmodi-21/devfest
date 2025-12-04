@@ -46,7 +46,7 @@ export async function connectToDatabase(): Promise<Mongoose> {
       dbName: "devfest",
     };
 
-    cached.promise = mongoose.connect(MONGODB_URI, options);
+    cached.promise = mongoose.connect(MONGODB_URI!, options)
   }
 
   try {
