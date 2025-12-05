@@ -1,3 +1,4 @@
+"use server"
 import { Event } from "@/database"
 import connectToDatabase from "../mongodb"
 

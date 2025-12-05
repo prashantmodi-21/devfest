@@ -1,4 +1,3 @@
-"use cache"
 import EventCard from "@/app/components/EventCard";
 import EventForm from "@/app/components/EventForm";
 import { IEvent } from "@/database";
@@ -43,6 +42,7 @@ import { notFound } from "next/navigation";
   
 
 const EventDetails = async({params}: {params: Promise<string>}) => {
+  "use cache"
   cacheLife('hours')
     const slug = await params
 
