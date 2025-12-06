@@ -24,6 +24,10 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({message: 'Invalid form data'}, { status: 400 })
     }
     const file = formData.get('image') as File
+    
+    const agenda = JSON.parse(event.agenda as string)
+    const tags = JSON.parse(event.tags as string)
+
     if(!file) return NextResponse.json({message: 'Image file is required'}, { status: 400 })
     
     const allowedTypes = ['image/jpeg', 'image/png', 'image/gif', 'image/webp']
@@ -43,13 +47,6 @@ export async function POST(request: NextRequest) {
         });
 
         event.image = (uploadResult as { secure_url: string }).secure_url;
-        let agenda, tags
-        try {
-          agenda = JSON.parse(event.agenda as string)
-          tags = JSON.parse(event.tags as string)
-        } catch {
-          return NextResponse.json({message: 'Invalid JSON in agenda or tags'}, { status: 400 })
-        }
         
     const createdEvent = await Event.create({ ...event, agenda, tags })
     return NextResponse.json({message: 'Event created', event: createdEvent}, { status: 201 })

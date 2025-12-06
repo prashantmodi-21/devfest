@@ -46,8 +46,6 @@ const EventDetails = async({params}: {params: Promise<string>}) => {
   cacheLife('hours')
     const slug = await params
 
-    const Entries = await EventEntries(slug);
-
   let event;
     try {
         const request = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/events/${slug}`, {
@@ -72,9 +70,11 @@ const EventDetails = async({params}: {params: Promise<string>}) => {
         return notFound();
     }
 
-    const { description, image, overview, date, time, location, mode, agenda, audience, tags, organizer, title, venue } = event;
+    const { description, image, overview, date, time, location, mode, agenda, audience, tags, organizer, title, venue, _id } = event;
 
-  const events = await similarEvents(slug) as unknown as IEvent[];
+    const Entries = await EventEntries(_id);
+
+    const events = await similarEvents(slug) as unknown as IEvent[];
   return (
     <section id="event">
 
